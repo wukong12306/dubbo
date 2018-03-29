@@ -1,0 +1,83 @@
+四、字节码指令
+1，指令详解
+	java指令包括操作码和操作数组成，比如：0x:19 16,19就是操作码，16就是操作数，
+	很多时候，没有操作数，只有操作码，比如0x：2a 就只有操作码，是aload_0是将第一个本地变量放到栈顶
+	字节码仅有1个byte，也就说只有0-255,java不需要对齐，
+	也就是说一行执行代码可能只有 0x：2a 只占1个byte，还有可能是0x:19 16 这样，占据两个byte，
+	其他考虑对齐的语言，不管执行哪个指令，占用的长度可能都是32位，或者64位，是固定的
+	java的坏处也很明显，在运行的时候，还需要考虑下具体的长度，优势也有，节省空间，节省传输
+	（对齐部分，是个人理解）
+	java的指令很多有助于帮助理解，比如i代表int，l表示long，s代表short，b代表byte，c代表char，f代表float，d代表double，a代表reference
+2，加载和存储指令
+	将局部变量加载到栈顶，i是int，l时long，f是fload，d是double，a是引用，iload 是将特定变量放到栈顶，iload_<n>是将第n+1个变量放栈顶n从0开始
+	iload,iload_<n>
+	lload,lload_<n>
+	fload,fload_<n>
+	dload,dload_<n>
+	aload,aload_<n>
+
+	将栈顶元素存储到局部变量,也是包括ilfda五种
+	istore,istore_<n>
+
+	将常量加载到操作栈顶
+	bipush 单字节整数 推至栈顶，-127-128
+	sipush 短整型 推至栈顶 -65535-65535
+	ldc 将常量池中 int float string 型常量推至栈顶
+	ldc_w 将常量池中 int float string 型常量推至栈顶(宽索引，但不知道是什么)
+	ldc_2w 将常量池中 long double 型常量推至栈顶
+	iconst_m1 将-1 退至栈顶
+	aconst_null 将null 推至栈顶
+	iconst_<i>,lconst_<i>,fconst_<i>,dconst_<i> 将常量i 推至栈顶
+
+	举例：iload 15 是将局部变量第15个放到栈顶，iload_<1> 是将第2个本地变量放到栈顶，其他类似
+3，运算指令
+	加法：iadd ladd fadd dadd
+	减法：isub 。。。
+	乘法：imul ...
+	除法：idiv ...
+	求余：irem ...
+	取反：ineg ...
+	位移：ishl ishr iushr lshl lshr lushr 
+	或：  ior lor
+	与：  iand land
+	异或：ixor lxor
+	自增：iinc 
+	比较：dcmpg dcmpl fcmpg fcmpl lcmp 
+	数据运算可能会溢出，比如俩个整数相加可能是一个负数，但不会抛出异常，在除法和求余运算时，除数为0 ArithmeticException
+	位移指令ishl 是左移，ishr 是右移不带符号位，iushr是右移带符号位
+	比较：dcmpg 将栈顶两个double对比，将结果(1，0，-1)押入栈顶，如果有值为nan时，将1压入栈顶
+		dcmpl 和上面一样，只是如果有值为nan时，将 -1 压入栈顶
+		lcmp 时对比long值，将结果(1，0，-1)押入栈顶
+4，类型转换指令
+	小类型向大类型转换是安全的，比如int 到 long float double，long 到 float double，float 到 double
+	如果是由大类型到小类型，必须使用指令
+	i2b i2c i2s l2i f2i f2l d2i d2l d2f 
+	由大到小，可能会有精度损失，正负号变化等问题，用的很少，如果用到可以百度或者查看书详细看
+5，对象创建和访问
+	new 创建实例对象
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
